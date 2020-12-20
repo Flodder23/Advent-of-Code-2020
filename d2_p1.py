@@ -1,4 +1,4 @@
-from d2_parse import input_parse
+from d2_p1_parse import input_parse
 
 valid = 0
 
