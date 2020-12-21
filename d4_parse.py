@@ -6,7 +6,7 @@ def input_parse(filename="d4_input.txt"):
 	for p in raw:
 		passport = {}
 		for field in ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"):
-			match = re.search("(\s|^)%s:(?P<%s>\S+)(\s|$)"%(field, field), p)
+			match = re.search(r"(\s|^)%s:(?P<%s>\S+)(\s|$)"%(field, field), p)
 			if match:
 				passport[field] = match.groupdict()[field]
 			else:
