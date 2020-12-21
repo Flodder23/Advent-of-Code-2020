@@ -11,4 +11,5 @@ def get_seat_number(seat):
 			c += 2 ** i
 	return r * 8 + c
 
-print(get_seat_number(max(input_parse(), key=get_seat_number)))
+if __name__ == "__main__":
+	print(get_seat_number(max(input_parse(), key=get_seat_number)))

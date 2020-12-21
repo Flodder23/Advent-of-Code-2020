@@ -31,8 +31,6 @@ def binary_insert(item, arr, compare=int, below=None, above=None, item_value=Non
 	midpoint = (below + above) // 2
 	midpoint_value = compare(arr[midpoint])
 
-	print(item, arr, below, midpoint, above)
-
 	if item_value < midpoint_value:
 		return binary_insert(item, arr, compare, below, midpoint - 1, item_value)
 	elif midpoint_value < item_value:
