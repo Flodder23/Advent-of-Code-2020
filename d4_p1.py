@@ -1,6 +1,6 @@
 from d4_parse import input_parse
 
-passports = input_parse("d4_input_example.txt")
+passports = input_parse()
 valid = 0
 
 for p in passports:
