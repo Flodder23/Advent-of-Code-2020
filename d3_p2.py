@@ -10,7 +10,6 @@ for [dx, dy] in ((1, 1), (3, 1), (5, 1), (7, 1), (1, 2)):
 		if x >= len(map[y]):
 			x -= len(map[y])
 		trees += (map[y][x] == "#")
-#		print(map[y][0:x] + "(" + map[y][x] + ")" + map[y][x+1:-1])
 		x += dx
 		y += dy
 	total_trees *= trees
