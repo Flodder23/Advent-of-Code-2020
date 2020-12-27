@@ -1,5 +1,5 @@
-from d8_parse import input_parse
-from d8_p1 import HandheldGameConsole, mark_already
+from d_08_parse import input_parse
+from d_08_p1 import HandheldGameConsole, mark_already
 
 instructions = input_parse()
 

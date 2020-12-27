@@ -1,4 +1,4 @@
-from d3_parse import input_parse
+from d_03_parse import input_parse
 
 map = input_parse()
 trees = 0

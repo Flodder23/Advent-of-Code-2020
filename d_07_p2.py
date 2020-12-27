@@ -1,4 +1,4 @@
-from d7_parse import input_parse
+from d_07_parse import input_parse
 
 def amount_contained(colour, contain_dict):
 	return sum([

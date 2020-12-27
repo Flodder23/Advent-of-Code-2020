@@ -1,4 +1,4 @@
-from d7_parse import input_parse
+from d_07_parse import input_parse
 
 def can_hold_gold(colour, contains, contained_in=[], confirmed={}):
 	if confirmed[colour] is None:

@@ -1,6 +1,6 @@
 import re
 
-def input_parse(filename="d7_input.txt"):
+def input_parse(filename="d_07_input.txt"):
 	raw = open(filename, "r").readlines()
 	rules = {}
 	for rule in raw:

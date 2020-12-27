@@ -1,6 +1,6 @@
 import re
 
-def input_parse(filename="d4_input.txt"):
+def input_parse(filename="d_04_input.txt"):
 	raw = open(filename, "r").read().split("\n\n")
 	passports = []
 	for p in raw:

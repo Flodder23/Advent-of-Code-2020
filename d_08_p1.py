@@ -1,4 +1,4 @@
-from d8_parse import input_parse
+from d_08_parse import input_parse
 
 class HandheldGameConsole:
 	def __init__(self, instructions):

@@ -1,4 +1,4 @@
-from d10_parse import input_parse
+from d_10_parse import input_parse
 from functions import quicksort
 
 joltages = [0] + quicksort(input_parse())

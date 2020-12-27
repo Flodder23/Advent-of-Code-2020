@@ -1,4 +1,4 @@
-from d5_parse import input_parse
+from d_05_parse import input_parse
 
 def get_seat_number(seat):
 	r = 0

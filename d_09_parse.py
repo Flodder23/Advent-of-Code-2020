@@ -1,4 +1,4 @@
-def input_parse(filename="d10_input.txt"):
+def input_parse(filename="d_09_input.txt"):
 	raw = open(filename, "r").readlines()
 	return list(map(int, raw))
 

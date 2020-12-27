@@ -1,5 +1,5 @@
-from d5_parse import input_parse
-from d5_p1 import get_seat_number
+from d_05_parse import input_parse
+from d_05_p1 import get_seat_number
 from functions import binary_insert
 
 seat_numbers = []
@@ -15,4 +15,8 @@ while above - below > 0:
 		above = midpoint - 1
 	elif seat_numbers[midpoint] - midpoint == d:
 		below = midpoint + 1
-print(seat_numbers[below - 5:above + 5])
+
+d = -2
+while seat_numbers[midpoint + d + 1] - seat_numbers[midpoint + d] == 1:
+	d += 1
+print(seat_numbers[midpoint + d] + 1)

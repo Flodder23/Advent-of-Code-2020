@@ -1,4 +1,4 @@
-from d1_parse import input_parse
+from d_01_parse import input_parse
 
 report = input_parse()
 
@@ -10,6 +10,6 @@ for i in range(len(report)):
 			for k in range(j+1, len(report)):
 				c = report[k]
 				if a + b + c == 2020:
-					print(a, b, c, a * b * c)
+					print(a * b * c)
 				if a + b + c > 2020:
 					break
