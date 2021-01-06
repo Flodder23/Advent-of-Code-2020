@@ -31,15 +31,17 @@ def check_equivalent_layout(layout1, layout2):
 				return False
 	return True
 
-layout = input_parse()
 
-while True:
-	next_layout = list(map(lambda row: row.copy(), layout))
-	for y in range(len(layout)):
-		for x in range(len(layout[y])):
-			next_layout[y][x] = get_next_state((y, x), layout)
-	if check_equivalent_layout(layout, next_layout):
-		break
-	layout = next_layout
+if __name__ == "__main__":
+	layout = input_parse()
 
-print(sum([sum([seat == "#" for seat in row]) for row in layout]))
+	while True:
+		next_layout = list(map(lambda row: row.copy(), layout))
+		for y in range(len(layout)):
+			for x in range(len(layout[y])):
+				next_layout[y][x] = get_next_state((y, x), layout)
+		if check_equivalent_layout(layout, next_layout):
+			break
+		layout = next_layout
+
+	print(sum([sum([seat == "#" for seat in row]) for row in layout]))
