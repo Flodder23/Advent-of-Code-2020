@@ -1,5 +1,4 @@
 from d_12_parse import input_parse
-from functions import quicksort
 
 class Ship:
 	def __init__(self, instructions):
@@ -30,7 +29,7 @@ class Ship:
 		elif i == "F":
 			self.move_forwards(v)
 		else:
-			raise ValueError(f"{instruction} invalid instruction.")
+			raise ValueError(f"{i} invalid instruction.")
 	
 	def move_to(self, coords):
 		x, y = coords
@@ -49,7 +48,7 @@ class Ship:
 	def turn_left(self, v):
 		self.facing = (self.facing - v / 90) % 4
 	def turn_right(self, v):
-		self.facing = (self.facing + v / 90) % 4
+		self.turn_left(-v)
 	def move_forwards(self, v):
 		if self.facing == 0:
 			self.move_east(v)
