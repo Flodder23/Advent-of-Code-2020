@@ -3,3 +3,4 @@ def input_parse(filename="d_15_input.txt"):
 
 if __name__ == "__main__":
 	print(input_parse())
+	
