@@ -16,7 +16,8 @@ def evaluate(expression):
 			total *= v
 	return total
 
-t = 0
-for line in input_parse():
-	t += evaluate(line)
-print(t)
+if __name__ == "__main__":
+	t = 0
+	for expression in input_parse():
+		t += evaluate(expression)
+	print(t)
