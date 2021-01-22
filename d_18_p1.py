@@ -17,7 +17,4 @@ def evaluate(expression):
 	return total
 
 if __name__ == "__main__":
-	t = 0
-	for expression in input_parse():
-		t += evaluate(expression)
-	print(t)
+	print(sum([evaluate(expression) for expression in input_parse()]))

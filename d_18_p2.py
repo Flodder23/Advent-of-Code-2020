@@ -12,9 +12,6 @@ def parse_expression(expression):
 			expression[i-1] = new_expr
 			i -= 2
 		i += 1
+	return expression
 
-t = 0
-for expression in input_parse():
-	parse_expression(expression)
-	t += evaluate(expression)
-print(t)
+print(sum([evaluate(parse_expression(expression)) for expression in input_parse()]))
