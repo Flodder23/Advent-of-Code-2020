@@ -11,6 +11,7 @@ def to_regex(rules, n):
 			+ ")"
 		for rule in rules[n]]) + ")"
 
-rules, messages = input_parse()
-regex = re.compile(to_regex(rules, "0"))
-print(sum([bool(regex.fullmatch(m)) for m in messages]))
+if __name__ == "__main__":
+	rules, messages = input_parse()
+	regex = re.compile(to_regex(rules, "0"))
+	print(sum([bool(regex.fullmatch(m)) for m in messages]))
