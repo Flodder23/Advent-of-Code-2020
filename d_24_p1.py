@@ -24,14 +24,16 @@ def ref2coords(ref):
 			coords[1] += 1
 	return coords
 
-references = input_parse()
-black_tiles = set()
+def set_black_tiles(references):
+	black_tiles = set()
 
-for ref in references:
-	coords = tuple(ref2coords(ref))
-	if coords in black_tiles:
-		black_tiles.remove(coords)
-	else:
-		black_tiles.add(coords)
+	for ref in references:
+		coords = tuple(ref2coords(ref))
+		if coords in black_tiles:
+			black_tiles.remove(coords)
+		else:
+			black_tiles.add(coords)
+	return black_tiles
 
-print(len(black_tiles))
+if __name__ == "__main__":
+	print(len(set_black_tiles(input_parse())))
