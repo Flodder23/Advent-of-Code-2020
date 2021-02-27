@@ -1,5 +1,6 @@
 from d_20_parse import input_parse
 from math import prod
+import re
 
 def get_sides(tile):
 	return [
@@ -13,6 +14,10 @@ def crop(tile):
 	return [row[1:-1] for row in tile[1:-1]]
 
 def rotate(tile, rot, flip):
+#	print("TILE:")
+#	for line in tile:
+#		print("".join(line))
+#	print()
 	for _ in range(rot):
 		tile = [[tile[-1-i][j] for i in range(len(tile))] for j in range(len(tile[0]))]
 	return tile[::-1] if flip else tile
@@ -34,11 +39,21 @@ def common_side(t0, t1):
 					return i, j, f
 	return None, None, None
 
+def align(t0, t1, s1):
+	"""Return rotation & flip needed so tile t0 matches tile t1 at given side s1"""
+	s0 = (s1 + 2) % 4
+	side_match = get_sides(t1)[s1]
+	for rot in range(4):
+		for flip in (False, True):
+			if side_match == get_sides(rotate(t0, rot, flip))[s0]:
+				return rot, flip
 
-tiles = input_parse("d_20_input_example.txt")
+
+tiles = input_parse()#"d_20_input_example.txt")
 ids = list(tiles.keys())
 matches = {i: {} for i in ids}
 
+# For each tile work out which tiles match which sides
 for i in range(len(ids) - 1):
 	id0 = ids[i]
 	for j in range(i + 1, len(ids)):
@@ -47,62 +62,83 @@ for i in range(len(ids) - 1):
 		if not s0 is None:
 			matches[id0][s0] = {
 				"id": id1,
-				"side": s1,
-				"flip": flip
+				"side": s1
 			}
 			matches[id1][s1] = {
 				"id": id0,
-				"side": s0,
-				"flip": flip
+				"side": s0
 			}
-#tiles = {key: crop(tile) for key, tile in tiles.items()}
 
-#get first corner piece
+# Get first corner piece
 for prev_id in ids:
 	if len(matches[prev_id]) == 2:
 		break
 for side in range(4):
 	if side in matches[prev_id] and (side+1)%4 in matches[prev_id]:
 		next_id = matches[prev_id][side]["id"]
+		matches[prev_id][side-1] = {
+			"id": 0#,
+#			"side": 0,
+		}  # Setting up for easier rotation things later
 		break
 
-image = [[prev_id]]
-print(prev_id)
+image = [[0], [prev_id]]
 tiles[prev_id] = rotate(tiles[prev_id], (-side) % 4, False)
-flipped = False
 
+# Create grid of tile IDs
 while True:
 	while True:
-		print(next_id)
 		image[-1].append(next_id)
 		left_side = get_side_matched(matches, next_id, prev_id)
 		right_side = (left_side + 2) % 4
-		flipped = flipped != matches[next_id][left_side]["flip"]
-		tiles[next_id] = rotate(tiles[next_id], left_side, flipped)
-		prev_id = next_id
-		if not right_side in matches[prev_id]:
+		if not right_side in matches[next_id]:
 			break
+		prev_id = next_id
 		next_id = matches[prev_id][right_side]["id"]
 	above_id = image[-1][0]
-	right_side = get_side_matched(matches, above_id, image[-1][1])
-	down_side = (right_side + 1) % 4
-	if matches[above_id][right_side]["flip"]:
-		down_side = (down_side + 2) % 4
+	down_side = (get_side_matched(matches, above_id, image[-2][0]) + 2) % 4
 	if not down_side in matches[above_id]:
 		break
 	prev_id = matches[above_id][down_side]["id"]
 	image.append([prev_id])
-	up_side = matches[above_id][down_side]["side"]
-	if matches[above_id][down_side]["flip"]:
-		up_side = (up_side + 2) % 4
-	tiles[prev_id] = rotate(tiles[prev_id], (up_side - 1) % 4, matches[above_id][down_side]["flip"])
-	next_id = matches[prev_id][(up_side + 1) % 4]["id"]
-	
+	maybe_right_side = (get_side_matched(matches, prev_id, above_id) + 1) % 4
+	if maybe_right_side in matches[prev_id]:
+		right_side = maybe_right_side
+	else:
+		right_side = (maybe_right_side + 2) % 4
+	next_id = matches[prev_id][right_side]["id"]
+del image[0]
+
+# Use grid of tile IDs to rotate & flip tiles to match
+# (separate to above section because it got too long and complicated and buggy)
+for y in range(len(image)):
+	if y != 0:
+		tiles[image[y][0]] = rotate(tiles[image[y][0]], *align(tiles[image[y][0]], tiles[image[y-1][0]], 1))
+	for x in range(1, len(image[y])):
+		tiles[image[y][x]] = rotate(tiles[image[y][x]], *align(tiles[image[y][x]], tiles[image[y][x-1]], 0))
 
 for tile_row in image:
-	print()
-	for tile_id in tile_row:
-		print()
-		print(tile_id)
-		for row in tiles[tile_id]:
-			print("".join(row))
+	for i in tile_row:
+		tiles[i] = crop(tiles[i])
+
+# Make "whole image" to search for monsters in, joining tiles up in grid
+whole_image = [[]]
+for tile_row in image:
+	for i in range(8):
+		for tile_id in tile_row:
+			whole_image[-1].extend(tiles[tile_id][i])
+		whole_image.append([])
+del whole_image[-1]
+
+monster = """
+                  # 
+#    ##    ##    ###
+ #  #  #  #  #  #   """[1:]  # Remove first newline
+for rot in range(4):
+	for flip in (False, True):
+		new_image = ["".join(row) for row in rotate(whole_image, rot, flip)]
+		k = len(new_image[0])
+		monsters = len(re.findall(r"(?=(#..{"+str(k-19)+"}#.{4}##.{4}##.{4}###.{"+str(k-19)+"}.#.{2}#.{2}#.{2}#.{2}#.{2}#.{3}))", "\n".join(new_image), re.DOTALL))
+		if monsters > 0:
+			print("".join(new_image).count('#') - (monsters * 15))
+			break
